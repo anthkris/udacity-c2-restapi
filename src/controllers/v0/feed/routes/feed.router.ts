@@ -29,7 +29,18 @@ router.patch('/:id',
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.params;
+        let { change } = req.body;
+        const item = await FeedItem.findByPk(id);
+        console.log(item);
+
+        if ( !item ) {
+            return res.status(404).send({ message: 'Item not found' });
+        }
+
+        item.update({ change }).then(() => {
+            return res.status(204).send({ message: 'Item updated successfully' });
+        })
 });
 
 
